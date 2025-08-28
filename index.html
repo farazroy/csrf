@@ -11,7 +11,7 @@
     async function test() {
       try {
         // Fetch request to the same origin
-        let res = await fetch("/api/test", {
+        let res = await fetch("https://hpanel.hostinger.com/api/auth/api/external/v1/access?gaid=GA1.1.1770165202.1756321190", {
           method: "GET",
           credentials: "include" // Important: sends cookies even HttpOnly
         });
